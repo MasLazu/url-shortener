@@ -1,0 +1,5 @@
+CREATE TABLE url (
+    id VARCHAR(16) NOT NULL,
+    url VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+)
