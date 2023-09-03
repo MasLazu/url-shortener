@@ -1,12 +1,14 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"url-shortener/config"
 	"url-shortener/handler"
 	"url-shortener/repository"
+	"url-shortener/views"
+
+	"github.com/joho/godotenv"
 
 	"github.com/gorilla/mux"
 )
@@ -18,9 +20,10 @@ func main() {
 	}
 
 	//bootstrap
+	views := views.NewView()
 	database := config.NewDatabase()
 	urlRepository := repository.NewUrlRepository(database)
-	urlHandler := handler.NewUrlHandler(urlRepository)
+	urlHandler := handler.NewUrlHandler(urlRepository, views)
 
 	//close database conn
 	defer database.Close()

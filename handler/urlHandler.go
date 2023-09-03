@@ -6,17 +6,20 @@ import (
 	"url-shortener/helper"
 	"url-shortener/model"
 	"url-shortener/repository"
+	"url-shortener/views"
 
 	"github.com/gorilla/mux"
 )
 
 type UrlHandler struct {
 	urlRepository *repository.UrlRepository
+	views         *views.View
 }
 
-func NewUrlHandler(urlRepository *repository.UrlRepository) *UrlHandler {
+func NewUrlHandler(urlRepository *repository.UrlRepository, views *views.View) *UrlHandler {
 	return &UrlHandler{
 		urlRepository: urlRepository,
+		views:         views,
 	}
 }
 
@@ -51,7 +54,7 @@ func (h *UrlHandler) Visit(w http.ResponseWriter, r *http.Request) {
 
 	url, err := h.urlRepository.FindById(r.Context(), id)
 	if err != nil {
-		helper.WriteResponse(w, http.StatusNotFound, "NOT_FOUND", "not found")
+		h.views.Write(w, "notfound", nil)
 		return
 	}
 
